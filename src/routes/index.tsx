@@ -1,21 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '#/components/ui/tabs'
+import { EmptyState } from '#/components/empty-state'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 
 export const Route = createFileRoute('/')({ component: Home })
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div className="flex min-h-48 items-center justify-center rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">
-      {message}
-    </div>
-  )
-}
 
 function Home() {
   return (
@@ -23,7 +11,8 @@ function Home() {
       <header className="mb-8">
         <h1 className="display-title text-3xl font-bold">Watchlist Tracker</h1>
         <p className="mt-2 text-muted-foreground">
-          Search for movies, build your watchlist, and keep track of your favorites.
+          Search for movies, build your watchlist, and keep track of your
+          favorites.
         </p>
       </header>
 
