@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { EmptyState } from '#/components/empty-state'
+import { SearchSection } from '#/components/search-section'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -25,7 +26,7 @@ function Home() {
         </TabsList>
 
         <TabsContent value="search" className="mt-6">
-          <EmptyState message="Search for a movie to get started." />
+          <SearchSection />
         </TabsContent>
 
         <TabsContent value="watchlist" className="mt-6">

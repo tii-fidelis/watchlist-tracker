@@ -27,7 +27,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Watchlist Tracker',
       },
     ],
     links: [
@@ -39,6 +39,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
   shellComponent: RootDocument,
   notFoundComponent: () => <p>Not Found</p>,
+  errorComponent: ({ error }) => (
+    <div className="page-wrap py-10">
+      <p className="text-destructive">
+        Something went wrong:{' '}
+        {error instanceof Error ? error.message : String(error)}
+      </p>
+    </div>
+  ),
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
