@@ -1,12 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { EmptyState } from '#/components/empty-state'
+import { MovieGrid } from '#/components/movie-grid'
 import { SearchSection } from '#/components/search-section'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
+import { useWatchlist } from '#/hooks/use-watchlist'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
+  const watchlist = useWatchlist()
+
   return (
     <div className="page-wrap py-10">
       <header className="mb-8">
@@ -26,11 +30,19 @@ function Home() {
         </TabsList>
 
         <TabsContent value="search" className="mt-6">
-          <SearchSection />
+          <SearchSection
+            isInWatchlist={watchlist.has}
+            onToggleWatchlist={watchlist.toggle}
+          />
         </TabsContent>
 
         <TabsContent value="watchlist" className="mt-6">
-          <EmptyState message="Your watchlist is empty. Add movies from search results." />
+          <MovieGrid
+            movies={watchlist.items}
+            isInWatchlist={watchlist.has}
+            onToggleWatchlist={watchlist.toggle}
+            emptyMessage="Your watchlist is empty. Add movies from search results."
+          />
         </TabsContent>
 
         <TabsContent value="favorites" className="mt-6">
