@@ -4,12 +4,14 @@ import { EmptyState } from '#/components/empty-state'
 import { MovieGrid } from '#/components/movie-grid'
 import { SearchSection } from '#/components/search-section'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
+import { useFavorites } from '#/hooks/use-favorites'
 import { useWatchlist } from '#/hooks/use-watchlist'
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
   const watchlist = useWatchlist()
+  const favorites = useFavorites()
 
   return (
     <div className="page-wrap py-10">
@@ -33,6 +35,8 @@ function Home() {
           <SearchSection
             isInWatchlist={watchlist.has}
             onToggleWatchlist={watchlist.toggle}
+            isFavorite={favorites.has}
+            onToggleFavorite={favorites.toggle}
           />
         </TabsContent>
 
@@ -41,12 +45,21 @@ function Home() {
             movies={watchlist.items}
             isInWatchlist={watchlist.has}
             onToggleWatchlist={watchlist.toggle}
+            isFavorite={favorites.has}
+            onToggleFavorite={favorites.toggle}
             emptyMessage="Your watchlist is empty. Add movies from search results."
           />
         </TabsContent>
 
         <TabsContent value="favorites" className="mt-6">
-          <EmptyState message="You haven't favorited any movies yet." />
+          <MovieGrid
+            movies={favorites.items}
+            isInWatchlist={watchlist.has}
+            onToggleWatchlist={watchlist.toggle}
+            isFavorite={favorites.has}
+            onToggleFavorite={favorites.toggle}
+            emptyMessage="You haven't favorited any movies yet."
+          />
         </TabsContent>
 
         <TabsContent value="recent" className="mt-6">
