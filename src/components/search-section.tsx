@@ -36,6 +36,8 @@ export interface SearchSectionProps {
   onToggleWatchlist?: (movie: ReturnType<typeof toMovieSummary>) => void
   onToggleFavorite?: (movie: ReturnType<typeof toMovieSummary>) => void
   onSearch?: (query: string) => void
+  /** Pre-fills and immediately runs a search — pass a new value (e.g. re-render with a changed `key`) to re-trigger. */
+  initialQuery?: string
 }
 
 export function SearchSection({
@@ -44,9 +46,10 @@ export function SearchSection({
   onToggleWatchlist,
   onToggleFavorite,
   onSearch,
+  initialQuery,
 }: SearchSectionProps) {
-  const [queryInput, setQueryInput] = useState('')
-  const [submittedQuery, setSubmittedQuery] = useState('')
+  const [queryInput, setQueryInput] = useState(initialQuery ?? '')
+  const [submittedQuery, setSubmittedQuery] = useState(initialQuery ?? '')
   const [genreId, setGenreId] = useState<number | undefined>(undefined)
   const [sortBy, setSortBy] = useState<SortBy>('popularity.desc')
   const [limit, setLimit] = useState(20)

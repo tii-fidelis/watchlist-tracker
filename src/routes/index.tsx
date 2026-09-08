@@ -1,10 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 
-import { EmptyState } from '#/components/empty-state'
 import { MovieGrid } from '#/components/movie-grid'
+import { RecentSearchesSection } from '#/components/recent-searches-section'
 import { SearchSection } from '#/components/search-section'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#/components/ui/tabs'
 import { useFavorites } from '#/hooks/use-favorites'
+import { useRecentSearches } from '#/hooks/use-recent-searches'
 import { useWatchlist } from '#/hooks/use-watchlist'
 
 export const Route = createFileRoute('/')({ component: Home })
@@ -12,6 +14,17 @@ export const Route = createFileRoute('/')({ component: Home })
 function Home() {
   const watchlist = useWatchlist()
   const favorites = useFavorites()
+  const recentSearches = useRecentSearches()
+
+  const [activeTab, setActiveTab] = useState('search')
+  const [rerun, setRerun] = useState<{ query: string; key: number } | null>(
+    null,
+  )
+
+  function handleSelectRecentQuery(query: string) {
+    setRerun({ query, key: Date.now() })
+    setActiveTab('search')
+  }
 
   return (
     <div className="page-wrap py-10">
@@ -23,7 +36,7 @@ function Home() {
         </p>
       </header>
 
-      <Tabs defaultValue="search">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="w-full sm:w-auto">
           <TabsTrigger value="search">Search</TabsTrigger>
           <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
@@ -33,10 +46,13 @@ function Home() {
 
         <TabsContent value="search" className="mt-6">
           <SearchSection
+            key={rerun?.key ?? 'default'}
+            initialQuery={rerun?.query}
             isInWatchlist={watchlist.has}
             onToggleWatchlist={watchlist.toggle}
             isFavorite={favorites.has}
             onToggleFavorite={favorites.toggle}
+            onSearch={recentSearches.record}
           />
         </TabsContent>
 
@@ -63,7 +79,7 @@ function Home() {
         </TabsContent>
 
         <TabsContent value="recent" className="mt-6">
-          <EmptyState message="Your recent searches will show up here." />
+          <RecentSearchesSection onSelectQuery={handleSelectRecentQuery} />
         </TabsContent>
       </Tabs>
     </div>
