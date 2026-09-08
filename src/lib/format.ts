@@ -15,3 +15,13 @@ export function formatRelativeTime(isoTimestamp: string): string {
   const diffDays = Math.round(diffHours / 24)
   return `${diffDays}d ago`
 }
+
+/** Formats a runtime in minutes as e.g. "2h 15m". */
+export function formatRuntime(minutes: number | null): string | null {
+  if (!minutes || minutes <= 0) return null
+  const hours = Math.floor(minutes / 60)
+  const remainingMinutes = minutes % 60
+  if (hours === 0) return `${remainingMinutes}m`
+  if (remainingMinutes === 0) return `${hours}h`
+  return `${hours}h ${remainingMinutes}m`
+}
