@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
-import { getMovieGenres, searchMovies } from '#/lib/tmdb'
+import { getMovieDetails, getMovieGenres, searchMovies } from '#/lib/tmdb'
 
 import type { MovieSearchInput } from '#/lib/tmdb'
 
@@ -17,5 +17,12 @@ export function useMovieGenres() {
     queryKey: ['movie-genres'],
     queryFn: () => getMovieGenres(),
     staleTime: Infinity,
+  })
+}
+
+export function useMovieDetails(movieId: number) {
+  return useQuery({
+    queryKey: ['movie-details', movieId],
+    queryFn: () => getMovieDetails({ data: movieId }),
   })
 }

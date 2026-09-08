@@ -1,6 +1,6 @@
 import { createServerFn } from '@tanstack/react-start'
 
-import type { TmdbMovieResult } from './movie'
+import type { TmdbMovieDetailsResult, TmdbMovieResult } from './movie'
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
@@ -190,3 +190,21 @@ export const getMovieGenres = createServerFn({ method: 'GET' }).handler(
     }
   },
 )
+
+export const getMovieDetails = createServerFn({ method: 'GET' })
+  .validator((movieId: number) => movieId)
+  .handler(
+    async ({ data: movieId }): Promise<TmdbResult<TmdbMovieDetailsResult>> => {
+      try {
+        const details = await tmdbFetch<TmdbMovieDetailsResult>(
+          `/movie/${movieId}`,
+          {
+            language: 'en',
+          },
+        )
+        return { ok: true, data: details }
+      } catch (error) {
+        return { ok: false, error: toErrorMessage(error) }
+      }
+    },
+  )
